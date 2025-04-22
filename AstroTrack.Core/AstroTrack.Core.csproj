@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\AstroTrack.Data\AstroTrack.Data.csproj" />
     <ProjectReference Include="..\AstroTrack.Models\AstroTrack.Models.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
+    <PackageReference Include="System.Net.Http.Json" Version="9.0.4" />
   </ItemGroup>
 
   <PropertyGroup>

@@ -13,6 +13,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AstroTrack.Models\AstroTrack.Models.csproj" />
+    <ProjectReference Include="..\AstroTrack.Core\AstroTrack.Core.csproj" />
+    <ProjectReference Include="..\AstroTrack.Common\AstroTrack.Common.csproj" />
   </ItemGroup>
 
 </Project>

@@ -11,6 +11,7 @@ namespace AstroTrack.Models
     {
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
+        public string BodyId { get; set; }
         public string Name { get; set; }
         public long DateTimestamp { get; set; }
         public string Type { get; set; }

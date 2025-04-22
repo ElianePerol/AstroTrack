@@ -8,16 +8,26 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AstroTrack.UI.ViewModels;
 
-namespace AstroTrack.UI;
 
 /// <summary>
 /// Interaction logic for MainWindow.xaml
 /// </summary>
+namespace AstroTrack.UI;
+
 public partial class MainWindow : Window
 {
     public MainWindow()
     {
         InitializeComponent();
+    }
+
+    private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is EventsViewModel vm)
+        {
+            await vm.LoadEventsAsync();
+        }
     }
 }

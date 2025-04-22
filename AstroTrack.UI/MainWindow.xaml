@@ -2,22 +2,31 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:AstroTrack.UI.ViewModels"
-        Title="AstroTrack" Height="450" Width="800">
+        Title="AstroTrack" Height="450" Width="800"
+        Loaded="MainWindow_Loaded">
     <Window.DataContext>
         <vm:EventsViewModel/>
     </Window.DataContext>
 
-    <Grid Margin="10">
+    <StackPanel Margin="10">
+        <!-- 2.1: Body selector -->
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+            <TextBlock Text="Select body:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+            <ComboBox ItemsSource="{Binding AvailableBodies}"
+                      SelectedItem="{Binding SelectedBody}"
+                      DisplayMemberPath="Name"
+                      Width="120" Margin="0,0,10,0"/>
+            <Button Content="Load Events"
+                    Command="{Binding LoadEventsCommand}"
+                    Width="100"/>
+        </StackPanel>
+
+        <!-- 2.2: Event list -->
         <DataGrid ItemsSource="{Binding Events}"
-              SelectedItem="{Binding SelectedEvent}"
-              AutoGenerateColumns="False"
-              CanUserAddRows="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Nom"    Binding="{Binding Name}" Width="2*"/>
-                <DataGridTextColumn Header="Date"   Binding="{Binding Date, StringFormat=d}" Width="*"/>
-                <DataGridTextColumn Header="Type"   Binding="{Binding Type}" Width="*"/>
-                <DataGridTextColumn Header="Desc."  Binding="{Binding Description}" Width="3*"/>
-            </DataGrid.Columns>
+                  SelectedItem="{Binding SelectedEvent}"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False">
+            <!-- your columns here -->
         </DataGrid>
-    </Grid>
+    </StackPanel>
 </Window>
