@@ -21,13 +21,12 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
-    }
 
-    private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
-    {
+        // Set the DataContext to the MainViewModel
         if (DataContext is EventsViewModel vm)
         {
-            await vm.LoadEventsAsync();
+            // Set the default selected body to the first one in the list
+            _ = vm.LoadEventsAsync();
         }
     }
 }

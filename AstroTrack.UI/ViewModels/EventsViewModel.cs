@@ -62,10 +62,9 @@ namespace AstroTrack.UI.ViewModels
             // Clear old data
             Events.Clear();
 
-            var list = DataService.Instance.Events
-                 .GetAll()
-                 .Where(e => e.BodyId == SelectedBody.Id);
-            foreach (var e in list)
+            // Fetch events from the API
+            var saved = DataService.Instance.Events.GetAll();
+            foreach (var e in saved.OrderBy(x => x.DateTimestamp))
                 Events.Add(e);
         }
 

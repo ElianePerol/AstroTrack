@@ -80,44 +80,37 @@ namespace AstroTrack.Data
         // Asynchronously initializes database and preloads events for all bodies.
         public async Task InitializeAsync(double latitude, double longitude, double elevation)
         {
-            try
-            {
-                // Setup DB and tables
-                InitializeDatabase();
+            InitializeDatabase();
 
-                // List of bodies to fetch
-                var bodies = new[] { "moon", "sun", "mercury", "venus", "mars", "jupiter", "saturn" };
-                var now = DateTime.UtcNow;
-                var toDate = now.AddDays(30);
+            var now = DateTime.UtcNow;
+            var toDate = now.AddDays(30);
 
-                var repo = new AstronomyRepository(_dbPath);
-                // Fetch each body's events and save locally
-                foreach (var bodyId in bodies)
-                {
-                    Console.WriteLine($"Syncing events for {bodyId}...");
-                    try
-                    {
-                        await repo.SyncBodyEventsAsync(bodyId, latitude, longitude, elevation, now, toDate);
-                    }
-                    catch (HttpRequestException httpEx) when (httpEx.StatusCode == System.Net.HttpStatusCode.NotFound)
-                    {
-                        // 404 means this body simply has no events endpoint—skip it
-                        Console.WriteLine($"No events endpoint for '{bodyId}', skipping.");
-                    }
-                    catch (Exception ex)
-                    {
-                        // Any other error we want to see at startup, so rethrow
-                        Console.Error.WriteLine($"Error syncing '{bodyId}': {ex.Message}");
-                        throw;
-                    }
-                }
-                Console.WriteLine("All body events synced.");
-            }
-            catch (Exception ex)
+            var horizons = new HorizonsRepository(_dbPath);
+
+            // 1) Asteroid close-approaches
+            var asteroidIds = new[]
             {
-                Console.Error.WriteLine($"Data synchronization failed: {ex.Message}");
-                throw;
+                "2000001", // Ceres (#1)
+                "2000002", // Pallas (#2)
+                "2000003", // Juno   (#3)
+                "2000004", // Vesta  (#4)
+                "2000433",  // Eros   (#433) }
+            };
+            foreach (var id in asteroidIds)
+            {
+                Console.WriteLine($"Syncing approaches for asteroid {id}...");
+                await horizons.SyncApproachesAsync(id, now, toDate);
             }
+
+            // 2) Planet & Moon ephemeris
+            var planetIds = new[] { "-198", "10", "499", "599", "699", "799" };
+            foreach (var id in planetIds)
+            {
+                Console.WriteLine($"Syncing ephemeris for body {id}...");
+                await horizons.SyncObserverEphemerisAsync(id, now, toDate);
+            }
+
+            Console.WriteLine("All data synced.");
         }
 
         // Closes the database connection.
